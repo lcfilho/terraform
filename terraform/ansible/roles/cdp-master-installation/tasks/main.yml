@@ -1,0 +1,111 @@
+---
+# tasks file for cdp-master-installation
+- name: Installing maria-db-server
+  yum:
+    name: mariadb-server
+    state: latest
+
+- name: Start and Enable maria-db
+  systemd:
+    state: started
+    enabled: yes
+    name: mariadb
+
+- name: Copy file with owner and permissions - MySQL scripts
+  copy:
+    src: ./mysql.sh
+    dest: /tmp/mysql.sh
+    owner: silveira
+    group: silveira
+    mode: '0755'
+
+- name: Execute MySQL script
+  command: bash /tmp/mysql.sh
+  become: yes
+
+- name: Installing cloudera-manager-server
+  yum:
+    name: cloudera-manager-server
+    state: present
+
+- name: SCM Prepare Database
+  command: bash /opt/cloudera/cm/schema/scm_prepare_database.sh mysql scm scm scm
+  become: yes
+
+- name: Start Cloudera Manager Server
+  systemd:
+    name: cloudera-scm-server
+    state: started
+    enabled: yes
+
+- name: Checking Cloudera Manager API
+  uri:
+    url: "http://master-01:7180/api/v12/hosts"
+    user: admin
+    password: admin
+    method: GET
+  register: _result
+  until: _result.status == 200
+  retries: 720
+  delay: 5
+
+- name: Create environment variable
+  shell: curl -u admin:admin -XGET http://master-01:7180/api/v12/hosts | grep hostId | awk '{print $3}' | head -n1 | sed -e 's/^"//' -e 's/",$//'
+  register: idNode
+
+- name: Template a file to /etc/files.conf
+  template:
+    src: ./mgmt-template.json.j2
+    dest: /tmp/mgmt-template.json
+    owner: luisfilho
+    group: luisfilho
+    mode: '0644'
+  vars:
+    masterid: "{{ idNode.stdout }}"
+
+- name: Content of JSON
+  command: cat /tmp/mgmt-template.json
+  register: jsonContent
+
+- name: Use Trial License
+  uri:
+    url: "http://master-01:7180/api/v12/cm/trial/begin"
+    user: admin
+    password: admin
+    method: POST
+    status_code: 204
+
+- name: Create MGMT
+  uri:
+    url: "http://master-01:7180/api/v12/cm/service"
+    body: "{{ content }}"
+    user: admin
+    password: admin
+    method: PUT
+    body_format: json
+  vars:
+    content: "{{ jsonContent.stdout }}"
+
+- name: Start MGMT
+  uri:
+    url: "http://master-01:7180/api/v12/cm/service/commands/start"
+    user: admin
+    password: admin
+    method: POST
+  register: _result2
+  until: _result2.status == 200
+  retries: 720
+  delay: 5
+
+- name: Using Cluster Deployment
+  uri:
+    url: "http://master-01:7180/api/v12/cm/importClusterTemplate?addRepositories=true"
+    body: "{{ lookup('file','/home/luisfilho/cloudera-terraform-gcp/ansible/roles/cdp-master-installation/tasks/cm-template.json') }}"
+    user: admin
+    password: admin
+    method: POST
+    body_format: json
+  register: _result2
+  until: _result2.status == 200
+  retries: 720 
+  delay: 5

@@ -1,0 +1,17 @@
+[cloudera-manager]
+master-01 ansible_host=10.150.0.10
+
+[masters]
+master-01 ansible_host=10.150.0.10
+master-02 ansible_host=10.150.0.11
+
+[workers]
+worker-01 ansible_host=10.150.0.12
+worker-02 ansible_host=10.150.0.13
+worker-03 ansible_host=10.150.0.14
+
+[all:vars]
+ansible_user=luisfilho
+ansible_ssh_private_key_file=/tmp/luisfilho
+ansible_become=yes
+tmp_dir=/tmp

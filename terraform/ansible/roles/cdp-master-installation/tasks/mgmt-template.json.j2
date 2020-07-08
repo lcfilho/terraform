@@ -1,0 +1,31 @@
+{
+ 	"name": "MGMT",
+	"displayName": "Cloudera Management Service",
+        "serviceState": "STARTED",
+	"roles": [{
+		"type": "HOSTMONITOR",
+		"hostRef": {
+			"hostId": "{{ masterid }}",
+			"hostname": "master-01.srv"
+		}
+	}, {
+		"type": "SERVICEMONITOR",
+		"hostRef": {
+			"hostId": "{{ masterid }}",
+			"hostname": "master-01.srv"
+		}
+	}, {
+		"type": "EVENTSERVER",
+		"hostRef": {
+			"hostId": "{{ masterid }}",
+			"hostname": "master-01.srv"
+		}
+	}, {
+		"type": "ALERTPUBLISHER",
+		"hostRef": {
+			"hostId": "{{ masterid }}",
+			"hostname": "master-01.srv"
+			}
+		}
+	]
+}

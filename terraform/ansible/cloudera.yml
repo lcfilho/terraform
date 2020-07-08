@@ -1,0 +1,12 @@
+---
+- hosts: all
+  gather_facts: true
+  become: true
+  roles:
+    - cdp
+    
+- hosts: cloudera-manager
+  gather_facts: true
+  become: true
+  roles:
+    - cdp-master-installation

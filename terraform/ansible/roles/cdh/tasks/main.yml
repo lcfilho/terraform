@@ -1,0 +1,53 @@
+---
+# tasks file for cdp-master-installation
+- name: Installing maria-db-server
+  yum:
+    name: mariadb-server
+    state: latest
+
+- name: Start and Enable maria-db
+  systemd:
+    state: started
+    enabled: yes
+    name: mariadb
+
+- name: Copy file with owner and permissions - MySQL scripts
+  copy:
+    src: ./mysql.sh
+    dest: /tmp/mysql.sh
+    owner: silveira
+    group: silveira
+    mode: '0755'
+
+- name: Execute MySQL script
+  command: bash /tmp/mysql.sh
+  become: yes
+
+- name: Add Cloudera Manager Yum Repo
+  yum_repository:
+    name: Cloudera-Manager
+    description: Cloudera YUM repository
+    baseurl: https://archive.cloudera.com/cm6/6.3.1/redhat7/yum/
+    gpgkey: https://archive.cloudera.com/cm6/6.3.1/redhat7/yum/RPM-GPG-KEY-cloudera
+    gpgcheck: yes
+
+- name: Installing cloudera-manager-server
+  yum:
+    name: cloudera-manager-server
+    state: present
+
+- name: Installing cloudera-manager-daemons
+  yum:
+    name: cloudera-manager-daemons
+    state: present
+
+
+- name: SCM Prepare Database
+  command: bash /opt/cloudera/cm/schema/scm_prepare_database.sh mysql scm scm scm
+  become: yes
+
+- name: Start Cloudera Manager Server
+  systemd:
+    name: cloudera-scm-server
+    state: started
+    enabled: yes

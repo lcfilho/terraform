@@ -1,0 +1,7 @@
+--- 
+- hosts: single-node
+  gather_facts: true
+  become: true
+  roles:
+    - cdp
+    - cdh
