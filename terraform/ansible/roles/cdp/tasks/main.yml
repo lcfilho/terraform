@@ -136,7 +136,7 @@
   lineinfile: dest=/etc/hosts 
               state=present
               dest=/etc/hosts 
-              regexp='.*{{ item }}$' line="{{ hostvars[item].ansible_default_ipv4.address }} {{item}}.srv {{ item }}"
+              regexp='.*{{ item }}$' line="{{ hostvars[item].ansible_default_ipv4.address }} {{item}}.internal {{ item }}"
   when: hostvars[item].ansible_default_ipv4.address is defined
   with_items: "{{ groups['all'] }}"
 
@@ -160,7 +160,7 @@
   lineinfile:
     dest: /etc/cloudera-scm-agent/config.ini
     regexp: "^server_host"
-    line: "server_host=master-01.srv"
+    line: "server_host=master-01.internal"
 
 - name: Restart Cloudera Manager Agents
   service:

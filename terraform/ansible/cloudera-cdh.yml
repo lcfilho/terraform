@@ -1,7 +1,12 @@
 --- 
-- hosts: single-node
+- hosts: cluster
   gather_facts: true
   become: true
   roles:
-    - cdp
     - cdh
+
+- hosts: cloudera-manager
+  gather_facts: true
+  become: true
+  roles:
+    - cdh-master-installation

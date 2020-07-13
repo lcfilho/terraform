@@ -1,17 +1,25 @@
 [cloudera-manager]
-master-01 ansible_host=10.150.0.10
+master-01 ansible_host=10.150.0.4 hostname=master-01.internal
 
 [masters]
-master-01 ansible_host=10.150.0.10
-master-02 ansible_host=10.150.0.11
+master-01 ansible_host=10.128.0.9 hostname=master-01.internal
+master-02 ansible_host=10.150.0.11 hostname=master-02.internal
 
 [workers]
-worker-01 ansible_host=10.150.0.12
-worker-02 ansible_host=10.150.0.13
-worker-03 ansible_host=10.150.0.14
+node-01 ansible_host=10.128.0.6 hostname=node-01.internal
+node-02 ansible_host=10.150.0.2 hostname=node-02.internal
+node-03 ansible_host=10.150.0.3 hostname=node-03.internal
+
+[cluster]
+master-01 ansible_host=10.128.0.9 hostname=master-01.internal
+master-02 ansible_host=10.150.0.11 hostname=master-02.internal
+node-01 ansible_host=10.128.0.6 hostname=node-01.internal
+node-02 ansible_host=10.150.0.2 hostname=node-02.internal
+node-03 ansible_host=10.150.0.3 hostname=node-03.internal
 
 [all:vars]
 ansible_user=luisfilho
 ansible_ssh_private_key_file=/tmp/luisfilho
 ansible_become=yes
 tmp_dir=/tmp
+cluster_name=silveira

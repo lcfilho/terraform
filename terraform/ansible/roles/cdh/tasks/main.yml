@@ -15,8 +15,8 @@
   copy:
     src: ./mysql.sh
     dest: /tmp/mysql.sh
-    owner: silveira
-    group: silveira
+    owner: luisfilho    
+    group: luisfilho
     mode: '0755'
 
 - name: Execute MySQL script

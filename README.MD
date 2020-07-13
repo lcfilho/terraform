@@ -1,3 +1,9 @@
-####TERRAFORM
+## Terraform
 
-##Criação para uso na maquina ansible
+ **Terraform** instalação cloudera por meio de terraform e ansible
+
+## Maquina ansible
+
+maquina com configurações iniciais, necessario desabilitar dns maquina cloudera
+
+

@@ -4,11 +4,11 @@ provider "google" {
  region      = "us-east4-c"
 }
 
-resource "google_compute_instance" "master01" {
- name         = "master1"
+resource "google_compute_instance" "master-01" {
+ name         = "master-01"
  machine_type = "n1-standard-4"
  zone         = "us-east4-c"
- hostname     = "master1.srv"
+ hostname     = "master-01.internal"
 
  boot_disk {
    initialize_params {
@@ -30,11 +30,11 @@ resource "google_compute_instance" "master01" {
  }
 }
 
-resource "google_compute_instance" "master02" {
- name         = "master2"
+resource "google_compute_instance" "master-02" {
+ name         = "master-02"
  machine_type = "n1-standard-4"
  zone         = "us-central1-b"
- hostname     = "master2.srv"
+ hostname     = "master-02.internal"
 
  boot_disk {
    initialize_params {
@@ -57,10 +57,10 @@ resource "google_compute_instance" "master02" {
 }
 
 resource "google_compute_instance" "node-01" {
- name         = "node1"
+ name         = "node-01"
  machine_type = "n1-standard-1"
  zone         = "us-central1-a"
- hostname     = "node1.srv"
+ hostname     = "node-01.internal"
 
  boot_disk {
    initialize_params {
@@ -82,10 +82,10 @@ resource "google_compute_instance" "node-01" {
  }
 }
 resource "google_compute_instance" "node-02" {
- name         = "node2"
+ name         = "node-02"
  machine_type = "n1-standard-1"
  zone         = "us-east4-a"
- hostname     = "node2.srv"
+ hostname     = "node-02.internal"
 
  boot_disk {
    initialize_params {
@@ -107,10 +107,10 @@ resource "google_compute_instance" "node-02" {
  }
 }
 resource "google_compute_instance" "node-03" {
- name         = "node3"
+ name         = "node-03"
  machine_type = "n1-standard-1"
  zone         = "us-east4-a"
- hostname     = "node3.srv"
+ hostname     = "node-03.internal"
 
  boot_disk {
    initialize_params {
@@ -135,8 +135,8 @@ resource "google_compute_instance" "node-03" {
 
 resource "null_resource" "hosts" {
   triggers = {
-   public_ip1  = google_compute_instance.master01.network_interface.0.access_config.0.nat_ip
-   public_ip2  = google_compute_instance.master02.network_interface.0.access_config.0.nat_ip
+   public_ip1  = google_compute_instance.master-01.network_interface.0.access_config.0.nat_ip
+   public_ip2  = google_compute_instance.master-02.network_interface.0.access_config.0.nat_ip
    public_ip3  = google_compute_instance.node-01.network_interface.0.access_config.0.nat_ip
    public_ip4  = google_compute_instance.node-02.network_interface.0.access_config.0.nat_ip
    public_ip5  = google_compute_instance.node-03.network_interface.0.access_config.0.nat_ip
@@ -146,7 +146,7 @@ resource "null_resource" "hosts" {
    connection {
      type = "ssh"
      user = "luisfilho"
-     host = google_compute_instance.master01.network_interface.0.access_config.0.nat_ip
+     host = google_compute_instance.master-01.network_interface.0.access_config.0.nat_ip
      private_key = file("/home/luisfilho/.ssh/id_rsa")
    }
    inline = [
@@ -158,7 +158,7 @@ resource "null_resource" "hosts" {
    connection {
      type = "ssh"
      user = "luisfilho"
-     host = google_compute_instance.master02.network_interface.0.access_config.0.nat_ip
+     host = google_compute_instance.master-02.network_interface.0.access_config.0.nat_ip
      private_key = file("/home/luisfilho/.ssh/id_rsa")
    }
    inline = [
@@ -210,8 +210,8 @@ resource "null_resource" "hosts" {
      private_key = file("/home/luisfilho/.ssh/id_rsa")
    }
    inline = [
-     "cd ~/terraform/ansible",
-     "ansible-playbook -i hosts cloudera.yml",
+     "cd /home/luisfilho/terraform-master/terraform/ansible",
+     "ansible-playbook -i hosts cloudera-cdh.yml",
    ]   
 
  }

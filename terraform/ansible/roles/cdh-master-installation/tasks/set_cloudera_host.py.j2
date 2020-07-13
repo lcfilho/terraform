@@ -1,0 +1,15 @@
+from requests.auth import HTTPBasicAuth
+import requests
+import json
+
+cloudera_host = '{{ hostvars['cloudera'].ansible_default_ipv4.address }}'
+cloudera_hostname = '{{ hostvars['cloudera'].hostname }}'
+
+response = requests.get(f'http://{cloudera_host}:7180/api/v12/hosts', auth=HTTPBasicAuth('admin', 'admin'))
+
+content = json.loads(response.content.decode("utf-8"))
+
+for i in content['items']:
+	if i['hostname'] == cloudera_hostname:
+		hostId = i['hostId']
+print(hostId)
