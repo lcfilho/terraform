@@ -100,7 +100,7 @@
 - name: Using Cluster Deployment
   uri:
     url: "http://master-01:7180/api/v12/cm/importClusterTemplate?addRepositories=true"
-    body: "{{ lookup('file','/home/luisfilho/cloudera-terraform-gcp/ansible/roles/cdp-master-installation/tasks/cm-template.json') }}"
+    body: "{{ lookup('file','/home/luisfilho/terraform/ansible/roles/cdp-master-installation/tasks/cm-template.json') }}"
     user: admin
     password: admin
     method: POST

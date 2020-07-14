@@ -1,10 +1,10 @@
 {
-  "cdhVersion" : "7.0.3",
+  "cdhVersion" : "6.3.1",
   "displayName" : "luisfilho",
-  "cmVersion" : "7.0.3",
-  "repositories" : [ "https://archive.cloudera.com/p/cdh7/{latest_supported}/parcels/", "https://archive.cloudera.com/cdh7/{latest_supported}/parcels/", "https://parcels.repos.intel.com/mkl/latest", "https://archive.cloudera.com/accumulo-c5/parcels/latest/", "https://archive.cloudera.com/accumulo6/6.1/parcels/", "https://archive.cloudera.com/kafka/parcels/latest/", "http://archive.cloudera.com/kudu/parcels/latest/", "https://archive.cloudera.com/sqoop-teradata-connector1/latest/parcels/", "https://archive.cloudera.com/sqoop-netezza-connector1/latest/", "https://archive.cloudera.com/sqoop-connectors/parcels/latest/" ],
+  "cmVersion" : "6.3.1",
+  "repositories" : [ "https://archive.cloudera.com/p/cdh6/{latest_supported}/parcels/", "https://archive.cloudera.com/cdh6/{latest_supported}/parcels/", "https://parcels.repos.intel.com/mkl/latest", "https://archive.cloudera.com/accumulo-c5/parcels/latest/", "https://archive.cloudera.com/accumulo6/6.1/parcels/", "https://archive.cloudera.com/kafka/parcels/latest/", "http://archive.cloudera.com/kudu/parcels/latest/", "https://archive.cloudera.com/sqoop-teradata-connector1/latest/parcels/", "https://archive.cloudera.com/sqoop-netezza-connector1/latest/", "https://archive.cloudera.com/sqoop-connectors/parcels/latest/" ],
   "products" : [ {
-    "version" : "7.0.3-1.cdh7.0.3.p0.1635019",
+    "version" : "6.3.1-1.cdh6.3.1.p0.1635019",
     "product" : "CDH"
   } ],
   "services" : [ {
